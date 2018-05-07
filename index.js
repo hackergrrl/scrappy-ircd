@@ -12,7 +12,11 @@ var server = net.createServer(function (socket) {
   users[user] = user
 
   console.log('CONNECTION', user.name, '(' + user.nick + ')')
+
+  socket.write(':localhost 001 ' + user.nick + ' :Welcome to a hacky server!\n')
+
   socket.on('data', function (buf) {
+    // TODO: split lines
     var line = buf.toString().trim()
     var match
     console.log('line', '"' + line + '"')
@@ -35,19 +39,24 @@ var server = net.createServer(function (socket) {
       }
       channels[channel].users.push(user)
       console.log(user.name, 'joined #' + channel)
+      // ':scroffle!~sww@c-73-15-8-51.hsd1.ca.comcast.net JOIN #testerya'
+      socket.write(':' + user.nick + ' JOIN ' + channel + '\n')
+      socket.write(':localhost MODE ' + channel + ' +ns\n')
+      socket.write(':localhost 353 ' + user.nick + ' @ ' + channel + ' :' + user.nick + '\n')
+      socket.write(':localhost 366 ' + user.nick + ' ' + channel + ' :End of /NAMES list.\n')
     }
 
     // PRIVMSG
     match = line.match(/^PRIVMSG #(.*) :(.*)$/)
     if (match) {
-      console.log(user.name, 'set NICK to', match[1])
-      console.log('match', match)
+      console.log(user.nick, 'set NICK to', match[1])
       var channel = '#' + match[1]
       var msg = match[2]
       if (channels[channel] && channels[channel].users.indexOf(user) !== -1) {
-        channels[channel].users.forEach(function (user) {
-          var buf = new Buffer('PRIVMSG ' + channel + ' ' + user.nick + ' ' + msg + '\n', 'utf-8')
-          user.socket.write(buf)
+        channels[channel].users.forEach(function (usr) {
+          if (user === usr) return
+          var buf = new Buffer(':'+user.nick+' PRIVMSG ' + channel + ' ' + msg + '\n', 'utf-8')
+          usr.socket.write(buf)
         })
       }
     }
