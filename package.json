@@ -1,0 +1,14 @@
+{
+  "name": "ircd",
+  "version": "0.0.0",
+  "description": "silly tiny broken irc server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "irc"
+  ],
+  "author": "noffle",
+  "license": "ISC"
+}
