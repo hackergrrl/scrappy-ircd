@@ -42,7 +42,7 @@ function processCommand (user, line, cb) {
   }
 
   // JOIN
-  match = line.match(/^JOIN #(.*)$/)
+  match = line.match(/^JOIN #(.*)$/) || line.match(/^MODE #(.*)$/)
   if (match) {
     var channel = '#' + match[1]
     if (!channels[channel]) {
