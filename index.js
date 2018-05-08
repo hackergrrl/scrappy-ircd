@@ -9,6 +9,8 @@ var server = net.createServer(function (socket) {
     socket: socket,
     nick: 'anonymous_' + Math.floor(Math.random() * 9999)
   }
+  user.username = user.nick
+  user.realname = user.nick
   users[user] = user
 
   console.log('CONNECTION', user.name, '(' + user.nick + ')')
@@ -99,6 +101,17 @@ function processCommand (user, line, cb) {
         usr.socket.write(buf)
       })
     }
+    return cb()
+  }
+
+  // WHOIS
+  match = line.match(/^WHOIS (.*)$/)
+  if (match) {
+    var nick = match[1]
+    var target = users[nick]
+    console.log(':localhost 311 ' + target.nick + ' ' + target.username + ' fakeaddr * :' + target.realname + '\n')
+    user.socket.write(':localhost 311 ' + user.nick + ' ' + target.nick + ' ' + target.username + ' fakeaddr * :' + target.realname + '\n')
+    user.socket.write(':localhost 318 ' + user.nick + ' :End of WHOIS list\n')
     return cb()
   }
 
