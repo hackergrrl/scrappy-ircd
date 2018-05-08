@@ -55,6 +55,12 @@ function processCommand (user, line, cb) {
     user.socket.write(':localhost MODE ' + channel + ' +ns\n')
     user.socket.write(':localhost 353 ' + user.nick + ' @ ' + channel + ' :' + user.nick + '\n')
     user.socket.write(':localhost 366 ' + user.nick + ' ' + channel + ' :End of /NAMES list.\n')
+
+    channels[channel].users.forEach(function (usr) {
+      if (user === usr) return
+      var buf = new Buffer(':localhost '+channel+' JOIN ' + user.nick + '\n', 'utf-8')
+      usr.socket.write(buf)
+    })
   }
 
   // PRIVMSG
