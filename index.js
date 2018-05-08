@@ -41,19 +41,35 @@ function processCommand (user, line, cb) {
     user.socket.write(':localhost 001 ' + user.nick + ' :Welcome to a hacky server!\n')
   }
 
+  // USER
+  match = line.match(/USER (.*) [08] \* :(.*)$/)
+  if (match) {
+    user.username = match[1]
+    user.realname = match[2]
+    return cb()
+  }
+
+  // MODE
+  match = line.match(/^MODE #(.*)$/)
+  if (match) {
+    var channel = '#' + match[1]
+    user.socket.write(':localhost ' + channel + '+ns\n')
+    return cb()
+  }
+
   // JOIN
-  match = line.match(/^JOIN #(.*)$/) || line.match(/^MODE #(.*)$/)
+  match = line.match(/^JOIN #(.*)$/)
   if (match) {
     var channel = '#' + match[1]
     if (!channels[channel]) {
       channels[channel] = { users: [] }
     }
     channels[channel].users.push(user)
-    console.log(user.name, 'joined ' + channel)
-    // ':scroffle!~sww@c-73-15-8-51.hsd1.ca.comcast.net JOIN #testerya'
+    console.log(user.nick, 'joined ' + channel)
     user.socket.write(':' + user.nick + ' JOIN ' + channel + '\n')
-    //user.socket.write(':localhost MODE ' + channel + ' +ns\n')
-    user.socket.write(':localhost JOIN ' + channel + ' +ns\n')
+    // user.socket.write(':localhost MODE ' + channel + ' +ns\n')
+    // user.socket.write(':localhost JOIN ' + channel + '\n')
+    user.socket.write(':localhost ' + channel + ' :stock welcome message\n')
     var nicks = channels[channel].users
       .map(function (usr) {
         return usr.nick
@@ -67,6 +83,7 @@ function processCommand (user, line, cb) {
       var buf = new Buffer(':localhost '+channel+' JOIN ' + user.nick + '\n', 'utf-8')
       usr.socket.write(buf)
     })
+    return cb()
   }
 
   // PRIVMSG
@@ -82,6 +99,7 @@ function processCommand (user, line, cb) {
         usr.socket.write(buf)
       })
     }
+    return cb()
   }
 
   cb()
