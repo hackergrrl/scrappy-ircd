@@ -109,6 +109,10 @@ function processCommand (user, line, cb) {
   if (match) {
     var nick = match[1]
     var target = users[nick]
+    if (!target) {
+      user.socket.write(':localhost 401 ' + user.nick + ' ' + nick + ' :No such nick/channel\n')
+      return cb()
+    }
     console.log(':localhost 311 ' + target.nick + ' ' + target.username + ' fakeaddr * :' + target.realname + '\n')
     user.socket.write(':localhost 311 ' + user.nick + ' ' + target.nick + ' ' + target.username + ' fakeaddr * :' + target.realname + '\n')
     user.socket.write(':localhost 318 ' + user.nick + ' :End of WHOIS list\n')
