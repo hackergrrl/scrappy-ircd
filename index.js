@@ -125,7 +125,7 @@ function processCommand (user, line, cb) {
 
   match = line.match(/^PING (.*)$/)
   if (match) {
-    user.socket.write(':localhost PONG ' + match[1] + '\n')
+    user.socket.write(':localhost PONG localhost :' + match[1] + '\n')
     return cb()
   }
 
