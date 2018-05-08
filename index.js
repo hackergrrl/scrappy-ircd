@@ -44,10 +44,15 @@ function processCommand (user, line, cb) {
   }
 
   // USER
-  match = line.match(/USER (.*) [08] \* :(.*)$/)
+  match = line.match(/USER (.*) [08] \* :?(.*)$/)
   if (match) {
     user.username = match[1]
     user.realname = match[2]
+
+    // motd hack
+    user.socket.write(':localhost 375 ' + user.nick + ' :- localhost Message of the day - \n')
+    user.socket.write(':localhost 372 ' + user.nick + ' :- whoo\n')
+    user.socket.write(':localhost 376 ' + user.nick + ' :End of MOTD command\n')
     return cb()
   }
 
