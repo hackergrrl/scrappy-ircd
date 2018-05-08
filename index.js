@@ -53,7 +53,15 @@ function processCommand (user, line, cb) {
     // ':scroffle!~sww@c-73-15-8-51.hsd1.ca.comcast.net JOIN #testerya'
     user.socket.write(':' + user.nick + ' JOIN ' + channel + '\n')
     user.socket.write(':localhost MODE ' + channel + ' +ns\n')
-    user.socket.write(':localhost 353 ' + user.nick + ' @ ' + channel + ' :' + user.nick + '\n')
+    var nicks = channels[channel].users
+      .filter(function (usr) {
+        if (user !== usr) return true
+      })
+      .map(function (usr) {
+        return usr.nick
+      })
+      .join(' ')
+    user.socket.write(':localhost 353 ' + user.nick + ' @ ' + channel + ' :' + nicks + '\n')
     user.socket.write(':localhost 366 ' + user.nick + ' ' + channel + ' :End of /NAMES list.\n')
 
     channels[channel].users.forEach(function (usr) {
