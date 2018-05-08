@@ -15,7 +15,7 @@ var server = net.createServer(function (socket) {
 
   console.log('CONNECTION', user.name, '(' + user.nick + ')')
 
-  socket.write(':localhost 001 ' + user.nick + ' :Welcome to a hacky server!\n')
+  // socket.write(':localhost 001 ' + user.nick + ' :Welcome to a hacky server!\n')
 
   socket.on('data', function (buf) {
     var lines = buf.toString().trim()
