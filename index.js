@@ -96,13 +96,12 @@ function processCommand (user, line, cb) {
   // PRIVMSG
   match = line.match(/^PRIVMSG #(.*) :(.*)$/)
   if (match) {
-    console.log(user.nick, 'set NICK to', match[1])
     var channel = '#' + match[1]
     var msg = match[2]
     if (channels[channel] && channels[channel].users.indexOf(user) !== -1) {
       channels[channel].users.forEach(function (usr) {
         if (user === usr) return
-        var buf = new Buffer(':'+user.nick+' PRIVMSG ' + channel + ' ' + msg + '\n', 'utf-8')
+        var buf = new Buffer(':'+user.nick+' PRIVMSG ' + channel + ' :' + msg + '\n', 'utf-8')
         usr.socket.write(buf)
       })
     }
@@ -121,6 +120,12 @@ function processCommand (user, line, cb) {
     console.log(':localhost 311 ' + target.nick + ' ' + target.username + ' fakeaddr * :' + target.realname + '\n')
     user.socket.write(':localhost 311 ' + user.nick + ' ' + target.nick + ' ' + target.username + ' fakeaddr * :' + target.realname + '\n')
     user.socket.write(':localhost 318 ' + user.nick + ' :End of WHOIS list\n')
+    return cb()
+  }
+
+  match = line.match(/^PING (.*)$/)
+  if (match) {
+    user.socket.write(':localhost PONG ' + match[1] + '\n')
     return cb()
   }
 
