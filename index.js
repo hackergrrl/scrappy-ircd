@@ -49,15 +49,12 @@ function processCommand (user, line, cb) {
       channels[channel] = { users: [] }
     }
     channels[channel].users.push(user)
-    console.log(user.name, 'joined #' + channel)
+    console.log(user.name, 'joined ' + channel)
     // ':scroffle!~sww@c-73-15-8-51.hsd1.ca.comcast.net JOIN #testerya'
     user.socket.write(':' + user.nick + ' JOIN ' + channel + '\n')
     //user.socket.write(':localhost MODE ' + channel + ' +ns\n')
     user.socket.write(':localhost JOIN ' + channel + ' +ns\n')
     var nicks = channels[channel].users
-      .filter(function (usr) {
-        if (user !== usr) return true
-      })
       .map(function (usr) {
         return usr.nick
       })
