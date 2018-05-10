@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var net = require('net')
-var ircd = require('.')()
+var argv = require('minimist')(process.argv)
+var ircd = require('.')({password: argv.p || argv.password || undefined})
 
 var server = net.createServer(function (socket) {
   ircd(socket)

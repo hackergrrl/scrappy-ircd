@@ -43,6 +43,14 @@ Add the server `localhost` port `6667` to your IRC client and you can join the
 channels in the channel mapping above and ought to see messages bridged between
 here and slack!
 
+## Password
+
+You can (hackily) set a password on ircd:
+
+1. run `ircd` as `ircd --password foobar`
+2. upon connecting with your client, send a private message to `authbot` with
+   that password; this will let you run other commands like JOIN, PRIVMSG, etc.
+
 ## What does it do / not do?
 
 It doesn't do most of RFC 1459. It does just enough to play nice with
