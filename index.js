@@ -3,6 +3,8 @@ module.exports = IRC
 function IRC (opts) {
   if(!(this instanceof IRC)) return new IRC(opts)
 
+  opts = opts || {}
+
   var users = {}
   var channels = {}
 

@@ -43,6 +43,25 @@ Add the server `localhost` port `6667` to your IRC client and you can join the
 channels in the channel mapping above and ought to see messages bridged between
 here and slack!
 
+## What does it do / not do?
+
+It doesn't do most of RFC 1459. It does just enough to play nice with
+`slack-irc` and my own ad-hoc tests with `weechat`. If it's not working with
+your client, open an issue and take a peek at the code!
+
+Implemented:
+
+- `NICK`
+- `JOIN`
+- `PING` / `PONG`
+- `PRIVMSG` to channel
+- `PRIVMSG` to user
+
+Superficially implemented (to make clients behave):
+- `USER`
+- `MODE`
+- `WHOIS`
+
 # License
 
 ISC
