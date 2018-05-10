@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "tiny shoddy handy irc server",
   "main": "index.js",
+  "bin": {
+    "ircd": "cmd.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -37,7 +37,7 @@ $ cat > slack_irc_config.json
 ^D
 ```
 
-Now you can run `scrappy-ircd` and `slack-irc -c slack_irc_config.json`.
+Now you can run `ircd` and `slack-irc -c slack_irc_config.json`.
 
 Add the server `localhost` port `6667` to your IRC client and you can join the
 channels in the channel mapping above and ought to see messages bridged between
