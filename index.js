@@ -93,7 +93,7 @@ function processCommand (user, line, cb) {
     return cb()
   }
 
-  // PRIVMSG
+  // PRIVMSG to channel
   match = line.match(/^PRIVMSG #(.*) :(.*)$/)
   if (match) {
     var channel = '#' + match[1]
@@ -105,6 +105,20 @@ function processCommand (user, line, cb) {
         usr.socket.write(buf)
       })
     }
+    return cb()
+  }
+
+  // PRIVMSG to user
+  match = line.match(/^PRIVMSG (.*) :(.*)$/)
+  if (match) {
+    var target = users[match[1]]
+    if (!target) {
+      // TODO: RPL_NOSUCHUSER?
+      return cb()
+    }
+    var msg = match[2]
+    var buf = new Buffer(':'+user.nick+' PRIVMSG ' + target.nick + ' :' + msg + '\n', 'utf-8')
+    target.socket.write(buf)
     return cb()
   }
 
