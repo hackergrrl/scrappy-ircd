@@ -16,7 +16,6 @@ function IRC (opts) {
     }
     user.username = user.nick
     user.realname = user.nick
-    user.authorized = !opts.password
     users[user] = user
 
     socket.on('data', function (buf) {
@@ -66,7 +65,7 @@ function IRC (opts) {
 
     // JOIN
     match = line.match(/^JOIN #(.*)$/)
-    if (match && user.authorized) {
+    if (match) {
       var channel = '#' + match[1]
       if (!channels[channel]) {
         channels[channel] = { users: [] }
@@ -93,7 +92,7 @@ function IRC (opts) {
 
     // PRIVMSG to channel
     match = line.match(/^PRIVMSG #(.*) :(.*)$/)
-    if (match && user.authorized) {
+    if (match) {
       var channel = '#' + match[1]
       var msg = match[2]
       if (channels[channel] && channels[channel].users.indexOf(user) !== -1) {
@@ -109,13 +108,6 @@ function IRC (opts) {
     // PRIVMSG to user
     match = line.match(/^PRIVMSG (.*) :(.*)$/)
     if (match) {
-      // HACK: auth password
-      console.log('match', match)
-      if (match[1] === 'authbot' && match[2] === opts.password) {
-        user.authorized = true 
-        return cb()
-      }
-
       var target = users[match[1]]
       if (!target) {
         user.socket.write(':local 401 ' + match[1] + ' :No such nick\n')
@@ -129,7 +121,7 @@ function IRC (opts) {
 
     // WHOIS
     match = line.match(/^WHOIS (.*)$/)
-    if (match && user.authorized) {
+    if (match) {
       var nick = match[1]
       var target = users[nick]
       if (!target) {
