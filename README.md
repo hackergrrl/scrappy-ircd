@@ -5,7 +5,13 @@
 Slack decided to remove its IRC gateway, and as an already unwilling user of
 their service, I sure as heck wasn't going to use their heavy, closed, slow
 frontend as well. So I wrote a minimal IRC server implementation, to be paired
-with `slack-irc`, to enable continued interaction with Slack via IRC.
+with [slack-irc](https://github.com/ekmartin/slack-irc), to enable continued
+interaction with Slack via IRC.
+
+The idea behind how it works is that slack-irc controls a Slack bot and an IRC
+bot, and relays the messages in between the two. Instead of using a public IRC
+server or trying to set up one of the big heavy complicated IRC servers out
+there, you can run `scrappy-irc` on localhost in one npm command.
 
 ## Install
 
@@ -37,7 +43,7 @@ $ cat > slack_irc_config.json
 ^D
 ```
 
-Now you can run `ircd` and `slack-irc -c slack_irc_config.json`.
+Now you can run the commands `ircd` and `slack-irc -c slack_irc_config.json`.
 
 Add the server `localhost` port `6667` to your IRC client and you can join the
 channels in the channel mapping above and ought to see messages bridged between
