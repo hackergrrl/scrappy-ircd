@@ -16,7 +16,7 @@ function IRC (opts) {
     }
     user.username = user.nick
     user.realname = user.nick
-    users[user] = user
+    users[user.nick] = user
 
     socket.on('data', function (buf) {
       var lines = buf.toString().trim()
