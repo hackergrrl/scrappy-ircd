@@ -56,7 +56,6 @@ It doesn't do most of RFC 1459. It does just enough to play nice with
 your client, open an issue and take a peek at the code!
 
 Implemented:
-
 - `NICK`
 - `JOIN`
 - `PING` / `PONG`
@@ -67,6 +66,10 @@ Superficially implemented (to make clients behave):
 - `USER`
 - `MODE`
 - `WHOIS`
+
+Slack-related functionality:
+- Sending & receiving messages in slack channels
+- ~DMs and group messages~
 
 # License
 
