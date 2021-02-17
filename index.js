@@ -91,7 +91,7 @@ function IRC (opts) {
     }
 
     // PRIVMSG to channel
-    match = line.match(/^PRIVMSG #(\S) :(.*)$/)
+    match = line.match(/^PRIVMSG #(\S+) :(.*)$/)
     if (match) {
       var channel = '#' + match[1]
       var msg = match[2]
