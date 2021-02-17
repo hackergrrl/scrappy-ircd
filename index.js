@@ -43,7 +43,7 @@ function IRC (opts) {
     }
 
     // USER
-    match = line.match(/USER (.*) [08] \* :?(.*)$/)
+    match = line.match(/USER (\S+) [08] \* :?(.*)$/)
     if (match) {
       user.username = match[1]
       user.realname = match[2]
@@ -91,7 +91,7 @@ function IRC (opts) {
     }
 
     // PRIVMSG to channel
-    match = line.match(/^PRIVMSG #(.*) :(.*)$/)
+    match = line.match(/^PRIVMSG #(\S) :(.*)$/)
     if (match) {
       var channel = '#' + match[1]
       var msg = match[2]
@@ -106,7 +106,7 @@ function IRC (opts) {
     }
 
     // PRIVMSG to user
-    match = line.match(/^PRIVMSG (.*) :(.*)$/)
+    match = line.match(/^PRIVMSG (\S+) :(.*)$/)
     if (match) {
       var target = users[match[1]]
       if (!target) {
