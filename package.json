@@ -1,6 +1,6 @@
 {
   "name": "scrappy-ircd",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "tiny shoddy handy irc server",
   "main": "index.js",
   "bin": {
